@@ -1,2 +1,66 @@
-hello M2 syscom
+Compte-rendu LAB6 Variables d’environnements
 Luge LIU
+14/10/2010
+
+1:
+env
+La commande env dans le système Linux peut afficher les variables d’environnement de l’utilisateur actuel et peut également être utilisée pour exécuter d’autres commandes sous les variables d’environnement spécifiées.
+Après avoir lancé cette commande, on a les résultats comme ci-dessous.
+=> HOME=/home/luge
+=> PATH=/user/local/sbin:/user/local/bin:/user/sbin:/user/bin:/sbin:/bin:/user/games:/user/local/games:/snap/bin
+
+2:
+echo $PATH
+La valeur PATH est une variable d'environnement, il faut donc utiliser un signe $ devant son non lors de récupérér. 
+(=> /user/local/sbin:/user/local/bin:/user/sbin:/user/bin:/sbin:/bin:/user/games:/user/local/games:/snap/bin)
+Lorsqu’un utilisateur entre une commande externe (une commande interne non shell) dans l’interface de ligne de commande shell, le shell doit rechercher le système pour trouver le programme correspondant. Les variables d’environnement PATH définissent le répertoire utilisé pour les recherches de commandes et de programmes. 
+Les répertoires de PATH sont séparés par des deux-points.
+
+3：
+touch script.sh
+vim script.sh
+chmod a+x script.sh
+./script.sh
+--------------------
+ps aux 
+L’instruction ps affiche des informations sur le processus en cours de fonctionnement.
+a: Affiche tous les programmes sous le terminal actuel, y compris ceux des autres utilisateurs.
+u: Affiche l’état du programme dans un format basé sur l’utilisateur.
+x: Affiche tous les programmes et ne se distingue pas par les terminaux.
+--------------------
+
+4:
+sudo mv script.sh /opt
+cd /opt
+ls
+Il s’agit d’un répertoire de niveau utilisateur.
+
+5:
+cd ..
+script.sh
+Un message d’erreur s’affiche indiquant que l’instruction est introuvable. Comme mentionné précédemment, car il n’y a pas de chemin /opt dans la variable PATH.
+export PATH=$PATH:/opt
+echo $PATH
+(=> /user/local/sbin:/user/local/bin:/user/sbin:/user/bin:/sbin:/bin:/user/games:/user/local/games:/snap/bin:/opt)
+script.sh
+La commande export peut ajouter, modifier ou supprimer des variables d’environnement pour une exécution ultérieure du programme.
+
+6:
+script.sh
+script.sh: command not found
+Parce que les variables d’environnement sont divisées en effets permanents et temporaires. Les variables d’environnement déclarées à l’aide de la commande export sont temporaires et expirent lorsque le shell est fermé.
+echo $PATH
+(=> /user/local/sbin:/user/local/bin:/user/sbin:/user/bin:/sbin:/bin:/user/games:/user/local/games:/snap/bin)
+
+7:
+cd $HOME
+ls -a
+vim .bashrc
+export PATH=$PATH:/opt
+Dans le répertoire $HOME, un fichier appelé .bashrc a été trouvé. Le but de ce fichier caché est de modifier les variables d’environnement au niveau de l’utilisateur. Sous un compte d’utilisateur fixe, les variables d’environnement modifiées via ce fichier sont permanentes.
+
+8：
+cd $HOME
+script.sh
+
+cr6
